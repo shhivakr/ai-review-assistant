@@ -6,6 +6,7 @@ import { connectDataBase } from "./config/db";
 import adminAuthRoutes from "./routes/adminAuth.js";
 import cookieParser from "cookie-parser";
 import businessRoutes from "./routes/business.js";
+import questionRoutes from "./routes/questions.js";
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ app.use("/api/admin", adminAuthRoutes);
  * business endpoint is protected consistently.
  */
 app.use("/api/admin/business", businessRoutes);
+app.use("/api/admin/questions", questionRoutes);
 app.get("/health", (_req, res) => {
   res.json({
     status: "ok",

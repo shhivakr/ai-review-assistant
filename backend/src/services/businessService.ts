@@ -43,10 +43,16 @@ export async function updateBusinessSettings(
     >
   >,
 ): Promise<Business> {
+  const crypto = await import("crypto");
+  const defaultQrToken = crypto.randomBytes(16).toString("hex");
+
   const business = await BusinessModel.findOneAndUpdate(
     {},
     {
       $set: updates,
+      $setOnInsert: {
+        qrToken: defaultQrToken,
+      },
     },
     {
       new: true,
