@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { connectDataBase } from "./config/db";
 import adminAuthRoutes from "./routes/adminAuth.js";
 import cookieParser from "cookie-parser";
+import businessRoutes from "./routes/business.js";
 
 dotenv.config();
 
@@ -35,6 +36,13 @@ app.use(express.json({ limit: "50kb" }));
  */
 app.use(cookieParser());
 app.use("/api/admin", adminAuthRoutes);
+/**
+ * Protected administrator business settings.
+ *
+ * Authentication is enforced inside the business route module so every
+ * business endpoint is protected consistently.
+ */
+app.use("/api/admin/business", businessRoutes);
 app.get("/health", (_req, res) => {
   res.json({
     status: "ok",
