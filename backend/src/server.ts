@@ -4,6 +4,7 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import { connectDataBase } from "./config/db";
 import adminAuthRoutes from "./routes/adminAuth.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -25,6 +26,14 @@ app.use(express.json({ limit: "50kb" }));
  * Keeping the `/api/admin` prefix here means individual route modules
  * only need to define their resource-specific paths, such as `/login`.
  */
+
+/**
+ * Parses the Cookie header and exposes cookies through req.cookies.
+ *
+ * The refresh token is intentionally stored in an httpOnly cookie, so the
+ * frontend cannot access it directly with JavaScript.
+ */
+app.use(cookieParser());
 app.use("/api/admin", adminAuthRoutes);
 app.get("/health", (_req, res) => {
   res.json({
