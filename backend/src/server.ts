@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import { connectDataBase } from "./config/db";
+import adminAuthRoutes from "./routes/adminAuth.js";
 
 dotenv.config();
 
@@ -18,7 +19,13 @@ app.use(
 );
 
 app.use(express.json({ limit: "50kb" }));
-
+/**
+ * Administrator authentication routes.
+ *
+ * Keeping the `/api/admin` prefix here means individual route modules
+ * only need to define their resource-specific paths, such as `/login`.
+ */
+app.use("/api/admin", adminAuthRoutes);
 app.get("/health", (_req, res) => {
   res.json({
     status: "ok",
