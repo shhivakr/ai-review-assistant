@@ -12,6 +12,28 @@ import publicRoutes from "./routes/public.js";
 
 dotenv.config();
 
+function validateEnv() {
+  const required = [
+    "MONGODB_URI",
+    "JWT_ACCESS_SECRET",
+    "JWT_REFRESH_SECRET",
+    "GEMINI_API_KEY",
+    "FRONTEND_URL",
+  ];
+  
+  const missing = required.filter(key => !process.env[key]);
+  if (missing.length > 0) {
+    if (process.env.NODE_ENV === "production") {
+      console.error(`Missing required environment variables for production: ${missing.join(", ")}`);
+      process.exit(1);
+    } else {
+      console.warn(`Warning: Missing environment variables: ${missing.join(", ")}`);
+    }
+  }
+}
+
+validateEnv();
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -19,7 +41,7 @@ app.use(helmet());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
     credentials: true,
   }),
 );

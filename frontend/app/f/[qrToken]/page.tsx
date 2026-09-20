@@ -186,7 +186,7 @@ export default function CustomerFlow({ params }: { params: Promise<{ qrToken: st
                   <Gem className="h-12 w-12 text-[#DDB879] mb-3" strokeWidth={1} />
                 )}
                 <h1 className="text-[20px] tracking-[0.15em] font-serif text-white uppercase text-balance leading-none mt-1">
-                  {business.name || "Tyagi Jewellers"}
+                  {business.name || "this business"}
                 </h1>
                 <p className="mt-2.5 text-[7px] tracking-[0.35em] font-medium text-white/70 uppercase">
                   Trusted Today. Treasured Forever.
@@ -285,7 +285,7 @@ export default function CustomerFlow({ params }: { params: Promise<{ qrToken: st
               {/* Content */}
               <div className="flex flex-col items-center flex-1 z-10 px-2">
                 <h2 className="text-[28px] sm:text-[32px] leading-[1.15] font-serif text-[#1A1412] mb-3 text-center tracking-tight text-balance">
-                  How would you rate your overall experience with {business.name || "Tyagi Jewellers"}?
+                  How would you rate your overall experience with {business.name || "this business"}?
                 </h2>
                 <p className="text-[14.5px] text-[#4A5568] text-center mb-10 font-medium">
                   Tap a star to tell us how we did.
@@ -615,7 +615,7 @@ export default function CustomerFlow({ params }: { params: Promise<{ qrToken: st
 
               <div className="mt-14 text-center">
                 <p className="text-[13.5px] text-[#5A524D] font-serif italic text-balance">
-                  Thank you for being a part of {business.name || "Tyagi Jewellers"} ❤️
+                  Thank you for being a part of {business.name || "this business"} ❤️
                 </p>
               </div>
             </div>
