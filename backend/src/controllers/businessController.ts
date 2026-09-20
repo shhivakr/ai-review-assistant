@@ -65,3 +65,24 @@ export async function updateBusinessController(
     });
   }
 }
+
+/**
+ * Regenerates the QR token for the business.
+ */
+export async function regenerateQrTokenController(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const { regenerateQrToken } = await import("../services/businessService.js");
+    const updated = await regenerateQrToken();
+    
+    res.status(200).json({
+      message: "QR Token regenerated successfully",
+      qrToken: updated.qrToken
+    });
+  } catch (error) {
+    console.error("Failed to regenerate QR token:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}

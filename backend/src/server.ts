@@ -7,6 +7,8 @@ import adminAuthRoutes from "./routes/adminAuth.js";
 import cookieParser from "cookie-parser";
 import businessRoutes from "./routes/business.js";
 import questionRoutes from "./routes/questions.js";
+import dashboardRoutes from "./routes/dashboard.js";
+import publicRoutes from "./routes/public.js";
 
 dotenv.config();
 
@@ -18,33 +20,22 @@ app.use(helmet());
 app.use(
   cors({
     origin: "http://localhost:3000",
+    credentials: true,
   }),
 );
 
 app.use(express.json({ limit: "50kb" }));
-/**
- * Administrator authentication routes.
- *
- * Keeping the `/api/admin` prefix here means individual route modules
- * only need to define their resource-specific paths, such as `/login`.
- */
 
-/**
- * Parses the Cookie header and exposes cookies through req.cookies.
- *
- * The refresh token is intentionally stored in an httpOnly cookie, so the
- * frontend cannot access it directly with JavaScript.
- */
 app.use(cookieParser());
 app.use("/api/admin", adminAuthRoutes);
-/**
- * Protected administrator business settings.
- *
- * Authentication is enforced inside the business route module so every
- * business endpoint is protected consistently.
- */
 app.use("/api/admin/business", businessRoutes);
 app.use("/api/admin/questions", questionRoutes);
+app.use("/api/admin/dashboard", dashboardRoutes);
+
+/* ======== Public customer-facing routes No authentication is applied here. ======== */
+
+app.use("/api/public", publicRoutes);
+
 app.get("/health", (_req, res) => {
   res.json({
     status: "ok",

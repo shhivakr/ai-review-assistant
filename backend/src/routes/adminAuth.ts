@@ -4,9 +4,11 @@ import { refreshTokenController } from "../controllers/refreshTokenController.js
 import { validateBody } from "../middleware/validate.js";
 import { loginSchema } from "../validators/authValidator.js";
 import { logoutController } from "../controllers/logoutController.js";
+import { authLimiter } from "../middleware/rateLimiter.js";
+
 const router = Router();
 
-router.post("/login", validateBody(loginSchema), loginController);
+router.post("/login", authLimiter, validateBody(loginSchema), loginController);
 
 router.post("/refresh", refreshTokenController);
 router.post("/logout", logoutController);

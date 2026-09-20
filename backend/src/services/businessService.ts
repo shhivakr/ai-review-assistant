@@ -64,3 +64,23 @@ export async function updateBusinessSettings(
 
   return business;
 }
+
+/**
+ * Regenerates the QR token explicitly and invalidates the old one.
+ */
+export async function regenerateQrToken(): Promise<Business> {
+  const crypto = await import("crypto");
+  const newQrToken = crypto.randomBytes(16).toString("hex");
+
+  const business = await BusinessModel.findOneAndUpdate(
+    {},
+    { $set: { qrToken: newQrToken } },
+    { new: true, runValidators: true }
+  ).exec();
+
+  if (!business) {
+    throw new Error("Business configuration not found");
+  }
+
+  return business;
+}

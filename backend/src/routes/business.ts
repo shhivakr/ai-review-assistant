@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getBusinessController,
   updateBusinessController,
+  regenerateQrTokenController,
 } from "../controllers/businessController.js";
 import { requireAuth } from "../middleware/auth.js";
 import { validateBody } from "../middleware/validate.js";
@@ -31,5 +32,6 @@ router.get("/", getBusinessController);
  * Zod validation runs before the controller.
  */
 router.put("/", validateBody(updateBusinessSchema), updateBusinessController);
+router.post("/qr/regenerate", regenerateQrTokenController);
 
 export default router;

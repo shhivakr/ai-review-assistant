@@ -1,10 +1,6 @@
 import { BusinessModel } from "../models/Business.js";
 import { QuestionModel } from "../models/Question.js";
 
-/**
- * Type representing the sanitized public business configuration
- * intended for the customer-facing frontend.
- */
 export interface PublicBusinessConfig {
   business: {
     name: string;
@@ -12,6 +8,7 @@ export interface PublicBusinessConfig {
     description: string;
     address: string;
     phone: string;
+    googleReviewUrl: string;
   };
   questions: Array<{
     id: string;
@@ -25,32 +22,27 @@ export interface PublicBusinessConfig {
 
 /**
  * Retrieves the business configuration and active questions using a public QR token.
- * 
- * Security Boundary: 
- * This service explicitly strips all MongoDB internal fields (_id, __v, qrToken, timestamps)
- * and only returns the active questions required to render the customer landing page.
  */
 export async function getPublicBusinessConfig(
   qrToken: string
 ): Promise<PublicBusinessConfig | null> {
-  const business = await BusinessModel.findOne({ qrToken }).exec();
+  const business = await BusinessModel.findOne({ qrToken }).lean().exec();
+  if (!business) return null;
 
-  if (!business) {
-    return null;
-  }
-
-  // Retrieve only ACTIVE questions, sorted deterministically by order
+  // Retrieve only ACTIVE questions, sorted by order
   const questions = await QuestionModel.find({ isActive: true })
     .sort({ order: 1 })
+    .lean()
     .exec();
 
   return {
     business: {
       name: business.name,
-      logoUrl: business.logoUrl,
-      description: business.description,
-      address: business.address,
-      phone: business.phone,
+      logoUrl: business.logoUrl ?? "",
+      description: business.description ?? "",
+      address: business.address ?? "",
+      phone: business.phone ?? "",
+      googleReviewUrl: business.googleReviewUrl ?? "",
     },
     questions: questions.map((q) => ({
       id: q._id.toString(),
